@@ -13,58 +13,64 @@ export class HomePage {
 
   constructor(private platform: Platform, private localNotifications: LocalNotifications,
     private alertController: AlertController) {
-      this.platform.ready().then(() => {
-        this.localNotifications.on('click').subscribe(res => {
-          console.log("click " + res);
-        });
-
-        this.localNotifications.on('trigger').subscribe(res => {
-          console.log("trigger " + res);
-        });
+    this.platform.ready().then(() => {
+      this.localNotifications.on('click').subscribe(res => {
+        let data = res.data ? res.data.data : "";
+        this.showAlert(res.title, res.text, data);
       });
-    }
+    });
+  }
+
+  requestPermission() {
+    this.localNotifications.requestPermission();
+  }
 
   simpleNotification() {
     this.localNotifications.schedule({
+      id: 1,
       title: 'Simple Notification',
       text: 'Text',
+      data: { id: 1 },
       foreground: true
     });
   }
 
-  relativeNotification() {
+  scheduleNotification() {
     this.localNotifications.schedule({
-      title: 'Relative Notification',
+      id: 2,
+      title: 'Scheduled Notification',
+      text: 'Text',
+      trigger: { in: 10, unit: ELocalNotificationTriggerUnit.SECOND },
+      foreground: true
+    });
+  }
+
+  recurringNotification() {
+    this.localNotifications.schedule({
+      id: 3,
+      title: 'Recurring Notification',
       text: 'Text',
       trigger: {
-        in: 5, unit: ELocalNotificationTriggerUnit.SECOND
+        every: ELocalNotificationTriggerUnit.SECOND
       }
     });
   }
 
-  repeatNotification() {
-    this.localNotifications.schedule({
-      title: 'Welcome to HAN!',
-      trigger: {
-        center: [51.987148, 5.951486],
-        radius: 15,
-        notifyOnEntry: true
-    }
-    });
+  cancelNotification() {
+    this.localNotifications.cancel(2);
   }
 
   actionNotification() {
     this.localNotifications.schedule({
+      id: 4,
       title: 'Action Notification',
-      text: 'Is this an action?',
+      text: 'Text',
       actions: [
         { id: 'yes', title: 'Yes' },
         { id: 'no', title: 'No' }
       ],
       wakeup: true,
-      trigger: {
-        in: 5, unit: ELocalNotificationTriggerUnit.SECOND
-      }
+      foreground: true
     });
   }
 
@@ -72,6 +78,15 @@ export class HomePage {
     this.localNotifications.getAll().then(res => {
       this.scheduled = res;
     });
+  }
+
+  showAlert(header, sub, msg) {
+    this.alertController.create({
+      header: header,
+      subHeader: sub,
+      message: msg,
+      buttons: ["OK"]
+    }).then(alert => alert.present());
   }
 
 }

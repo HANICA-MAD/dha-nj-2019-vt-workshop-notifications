@@ -1,27 +1,31 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Notifications Demo
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            Notifications Demo
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    <ion-button expand="block" (click)="simpleNotification()">Simple Notification</ion-button>
-    <ion-button expand="block" (click)="relativeNotification()">Relative Notification</ion-button>
-    <ion-button expand="block" (click)="repeatNotification()">Repeating Notification</ion-button>
-    <ion-button expand="block" (click)="actionNotification()">Action Notification</ion-button>
+    <div class="ion-padding">
+        <ion-button expand="block" (click)="requestPermission()">Request Permission</ion-button>
+        <br>
+        <ion-button expand="block" (click)="simpleNotification()">Simple Notification</ion-button>
+        <br>
+        <ion-button expand="block" (click)="scheduleNotification()">Schedule Notification</ion-button>
+        <ion-button expand="block" (click)="cancelNotification()">Cancel Notification</ion-button>
+        <br>
+        <ion-button expand="block" (click)="actionNotification()">Action Notification</ion-button>
+        <br>
+        <ion-button expand="block" (click)="getAll()">Get All Notifications</ion-button>
 
-    <ion-button expand="block" (click)="getAll()">Get All Notifications</ion-button>
-
-    <ion-list>
-      <ion-item *ngFor="let n of scheduled">
-        <ion-label text-wrap>
-          {{ n.id }} - {{ n.title }}
-          <p>Trigger: {{ n.trigger | json }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+        <ion-list>
+            <ion-item *ngFor="let n of scheduled">
+                <ion-label text-wrap>
+                    {{ n.id }} - {{ n.title }}
+                    <p>Trigger: {{ n.trigger | json }}</p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </div>
 </ion-content>
